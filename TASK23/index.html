@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>遍历查询多叉树</title>
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            text-align: center;
+        }
+        button {
+            border:0;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.5);
+            padding: 5px;
+            margin:20px 5px;
+            cursor: pointer;
+            background-color: #fff;
+        }
+        button:active {
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+        div {
+            float: left;
+            padding: 20px;
+            margin: 10px;
+            border: 1px solid #000;
+            background-color: #fff;
+            color: #000;
+        }
+        .default{
+            background-color: #fff;
+            color: black;
+        }
+        .active {
+            background-color: blue;
+            color: #fff;
+        }
+        .found {
+            background-color: red;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<button id="preOrder">深度优先遍历</button>
+<button id="postOrder">广度优先遍历</button>
+<input type="text" id="input">
+<button id="preOrderSearch">深度优先搜索</button>
+<button id="postOrderSearch">广度优先搜索</button>
+<section>
+    <div id="root">
+        Super
+        <div>
+            Cat
+            <div>
+                Apple
+                <div>Pear</div>
+                <div>Pig</div>
+                <div>Cola</div>
+                <div>Soccer</div>
+            </div>
+            <div>Phone</div>
+            <div>
+                <div>Book</div>
+                <div>School</div>
+            </div>
+        </div>
+        <div>
+            Note
+            <div>
+                Human
+                <div>Code</div>
+                <div>Operate</div>
+                <div>Man</div>
+            </div>
+            <div>
+                Program
+                <div>
+                    Bement
+                    <div>Cat</div>
+                </div>
+                <div>Glass</div>
+            </div>
+        </div>
+        <div>Fish</div>
+    </div>
+</section>
+<script>
+    (function(){
+        //获取元素
+        var preOrderBtn = document.getElementById("preOrder");
+        var postOrderBtn = document.getElementById("postOrder");
+        var input = document.getElementById("input");
+        var preSearchBtn = document.getElementById("preOrderSearch");
+        var postSearchBtn = document.getElementById("postOrderSearch");
+        var treeRoot = document.getElementById("root");
+
+
+        var divList = [];
+        var timer = null;
+
+        //单击事件
+        preOrderBtn.onclick = function(){
+            reset();
+            preOrder(treeRoot);
+            console.log(divList);
+            changeColor();
+        }
+        postOrderBtn.onclick = function(){
+            reset();
+            postOrder(treeRoot);
+            console.log(divList);
+            changeColor();
+        }
+        preSearchBtn.onclick = function(){
+            var value = input.value;
+            reset();
+            preOrder(treeRoot);
+            changeColor(value);
+        }
+        postSearchBtn.onclick = function(){
+            var value = input.value;
+            reset();
+            postOrder(treeRoot);
+            changeColor(value);
+        }
+
+
+
+
+        //深度优先遍历函数
+        function preOrder(node){
+            if(!(node == null)){
+                divList.push(node);
+                preOrder(node.firstElementChild);
+                preOrder(node.nextElementSibling);
+            }
+        }
+        //广度优先遍历函数
+        function postOrder(node){
+            if(!(node == null)){
+                divList.push(node);
+                postOrder(node.nextElementSibling);
+                postOrder(node.firstElementChild);
+            }
+        }
+        //颜色改变函数
+        function changeColor(value){
+            var i = 0;
+            divList[i].style.backgroundColor = "blue";
+            if(divList[i].textContent == value){
+                red(divList[i]);
+            }
+            timer = setInterval(function(){
+                i++;
+                if(i < divList.length){
+                    divList[i-1].style.backgroundColor = "#fff";
+
+                    divList[i].style.backgroundColor = "blue";
+                    if(divList[i].textContent == value){
+                        red(divList[i]);
+                        clearInterval(timer);
+                        setTimeout(function(){
+                            divList[i].style.backgroundColor = "#fff";
+                        },1000)
+                    }
+                }
+                else {
+                    clearInterval(timer);
+                    divList[divList.length-1].style.backgroundColor = "#fff";
+                }
+            },500)
+        }
+        //重置函数
+        function reset(){
+            divList = [];
+        }
+        //找到符合条件的node时,改变背景颜色
+        function red(node){
+            node.style.backgroundColor = "red";
+        }
+    })();
+</script>
+</body>
+</html>
