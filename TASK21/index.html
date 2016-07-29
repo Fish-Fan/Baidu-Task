@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>兴趣爱好</title>
+    <style>
+        #container div,#containerTag .tag{
+            border: 1px solid sienna;
+            display: inline-block;
+            margin: 5px;
+            padding: 5px;
+            cursor: pointer;
+        }
+        span{
+            color: #d55d5c;
+        }
+    </style>
+</head>
+<body>
+<div id="wrap">
+    Tag: <input id="tag" type="text"> <button id="addTag">添加</button>
+    <div id="containerTag">
+
+    </div>
+    <textarea id="textarea" cols="30" rows="10" placeholder="请在此输入字符,用空格,逗号,回车键来间隔字符"></textarea>
+    <button id="push">确认兴趣爱好</button>
+    </br>
+
+    <div id="container">
+
+    </div>
+</div>
+<script>
+    (function(){
+        //获取元素
+        var tag = document.getElementById("tag");
+        var addTag = document.getElementById("addTag");
+        var containerTag = document.getElementById("containerTag");
+        var container = document.getElementById("container")
+        var textarea = document.getElementById("textarea");
+        var pushBtn = document.getElementById("push");
+        //声明用来存放数据的数组
+        var tagArr = [];
+        var valueArr = [];
+
+
+        //点击事件
+        addTag.onclick = function(){
+            var tagValue = tag.value.trim();
+            var flag = check();
+            if(tagArr.length > 0){
+                if(flag){
+                    alert("请不要重复输入tag");
+                }
+                else {
+
+                    tagArr.push(tagValue);
+                    console.log(tagArr);
+                    renderTag();
+                }
+            }
+            else {
+                tagArr.push(tagValue);
+                console.log(tagArr);
+                renderTag();
+            }
+            if(tagArr.length > 10){
+                tagArr.shift();
+                containerTag.firstElementChild.remove();
+            }
+
+        }
+
+
+
+        pushBtn.onclick = function(){
+            //获取textarea的内容
+            var value = textarea.value.trim();
+            var arr = value.split(/[^0-9a-zA-Z\u4e00-\u9fa5]+/);
+            console.log(arr);
+            valueArr = valueArr.concat(arr);
+            console.log(valueArr);
+            render();
+            if(valueArr.length > 10){
+                valueArr.shift();
+                containerTag.firstElementChild.remove();
+            }
+        }
+
+        containerTag.onclick = function(){
+            var target  = event.target;
+            if(target.getAttribute("class") == "tag"){
+               target.remove();
+            }
+        }
+        //onmouseover事件
+        containerTag.onmouseover = function(event){
+            var target  = event.target;
+            if(target.getAttribute("class") == "tag"){
+                var value = target.innerHTML;
+                target.innerHTML = "点击删除" + value;
+            }
+        }
+        //onmouseleave事件
+        containerTag.onmouseout = function(event){
+            var target = event.target;
+            if(target.getAttribute("class") == "tag"){
+                var value = target.innerHTML;
+                target.innerHTML = value.replace("点击删除","");
+            }
+        }
+
+        //检测是否重复函数
+        function check(){
+            var value = tag.value;
+            var flag = tagArr.some(function(e){
+                return (e == value);
+            })
+            return flag;
+
+        }
+        //构造函数
+        function renderTag(){
+            containerTag.innerHTML = tagArr.map(function(e){
+                    return "<div class='tag'>" + e + "</div>"
+            })
+        }
+        function render(){
+            container.innerHTML = valueArr.map(function(e){
+                return "<div>" + e + "</div>";
+            }).join('');
+
+        }
+
+
+
+    })();
+</script>
+</body>
+</html>

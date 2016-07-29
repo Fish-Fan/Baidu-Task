@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表单联动</title>
+    <style>
+        .wrap{
+            width: 800px;
+            margin: 100px auto;
+        }
+        .container{
+            width: 200px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <input type="radio" name="select" id="student" checked>在校生
+    <div class="container">
+
+    </div>
+    <div class="container">
+
+    </div>
+</div>
+<script>
+    (function(){
+        //获取元素
+        var container = document.getElementsByClassName("container")[0];
+        var containerUn = document.getElementsByClassName("container")[1];
+        var studentBtn = document.getElementById("student");
+        var notStudentBtn = document.getElementById("notStudent");
+        //创建对象
+        var data = {
+            北京:['北京大学','北京邮电大学','北京航空航天大学'],
+            天津:['天津大学','南开大学','天津工业大学'],
+            上海:['上海交通大学','同济大学','华东科技大学']
+        }
+        render();
+        renderUn(0);
+        //onchange函数
+        if(container.hasChildNodes()){
+            var selectCity = container.getElementsByTagName("select")[0];
+            selectCity.onchange = function(){
+                var i = selectCity.selectedIndex;
+                var value = selectCity.getElementsByTagName("option")[i].getAttribute("value");
+                containerUn.innerHTML = '';
+                renderUn(value);
+            }
+        }
+        //构造函数
+        function render(){
+            var select = document.createElement("select");
+            //var option = document.createElement("option");
+            var cities = Object.keys(data);
+            var options = "";
+            for(var i=0;i < cities.length;i++)
+            {
+                var option = "<option " + "value=" + i + ">" + cities[i] + "</option>";
+                options += option;
+            }
+            select.innerHTML = options;
+            container.appendChild(select);
+        }
+        function renderUn(flag){
+            var selectCity = data["北京"];
+            console.log(flag);
+            if(flag == 0)
+                selectCity = data["北京"];
+            else if(flag == 1)
+                selectCity = data["天津"];
+            else if(flag == 2)
+                selectCity = data["上海"];
+            var select = document.createElement("select");
+            var universities = '';
+            for(var item in selectCity)
+            {
+                var option = "<option>" + selectCity[item] + "</option>";
+                universities += option;
+            }
+            select.innerHTML = universities;
+            containerUn.appendChild(select);
+        }
+    })();
+</script>
+</body>
+</html>

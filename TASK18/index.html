@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模拟队列</title>
+    <style>
+        .wrap{
+            width: 380px;
+            margin: 100px auto;
+        }
+        ul{
+            list-style-type: none;
+        }
+        .wrap li{
+            float: left;
+            padding: 5px;
+            border: 1px solid #000000;
+            margin: 0 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <button id="leftIn">左侧入</button>
+    <button id="rightIn">右侧入</button>
+    <input type="text" id="input">
+    <button id="leftOut">左侧出</button>
+    <button id="rightOut">右侧出</button>
+</div>
+</body>
+<script>
+    (function(){
+        //获取元素
+        var wrap = document.getElementsByClassName("wrap")[0];
+        var leftIn = document.getElementById("leftIn");
+        var rightIn = document.getElementById("rightIn");
+        var leftOut = document.getElementById("leftOut");
+        var rightOut = document.getElementById("rightOut");
+        var input = document.getElementById("input");
+        //声明用来存放数据的数组
+        var valueArr = [];
+        //创建ul标签
+        var ul = document.createElement("ul");
+
+
+
+
+
+        //点击事件
+        leftIn.onclick = function(){
+            //获取输入框的值
+            var inputValue = input.value;
+            valueArr.unshift(inputValue);
+            btnItem(inputValue);
+            console.log(valueArr,valueArr);
+        }
+        rightIn.onclick = function(){
+            var inputValue = input.value;
+            valueArr.push(inputValue);
+            btnItem(inputValue,valueArr);
+            console.log(valueArr);
+        }
+        leftOut.onclick = function(){
+            if(valueArr.length == 0){
+                alert("数组为空");
+            }
+            else {
+                var item = valueArr.shift();
+                alert(item + "已移除")
+                btnItem();
+            }
+        }
+        rightOut.onclick = function(){
+            if(valueArr.length == 0){
+                alert("数组为空");
+            }
+            else {
+                var item = valueArr.pop();
+                alert(item + "已移除");
+                btnItem();
+            }
+        }
+        function btnItem(){
+            ul.innerHTML = "";
+            valueArr.forEach(function(item,index,arr){
+                var li = document.createElement("li");
+                li.setAttribute("value",index);
+                li.innerHTML = item;
+                ul.appendChild(li);
+                wrap.appendChild(ul);
+            })
+        }
+
+
+        //事件委托处理函数
+
+        ul.onclick = function(event){
+            var target = event.target;
+            var index = target.getAttribute("value");
+            if(target.nodeName.toLowerCase() == "li"){
+                target.remove();
+                var dele = valueArr.splice(index,1);
+            }
+        };
+
+
+
+
+
+    })();
+
+</script>
+</html>

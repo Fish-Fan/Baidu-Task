@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模拟队列+冒泡排序</title>
+    <style>
+        .wrap{
+            width: 450px;
+            margin: 100px auto;
+        }
+        ul{
+            list-style-type: none;
+            vertical-align: bottom;
+        }
+        .wrap li{
+
+            display: inline-block;
+            width: 10px;
+            padding: 5px;
+            border: 1px solid #000000;
+            margin: 0 3px;
+            cursor: pointer;
+
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <button id="leftIn">左侧入</button>
+    <button id="rightIn">右侧入</button>
+    <input type="text" id="input">
+    <button id="leftOut">左侧出</button>
+    <button id="rightOut">右侧出</button>
+    <button id="resort">冒泡排序</button>
+</div>
+<script>
+    (function(){
+        //获取元素
+        var wrap = document.getElementsByClassName("wrap")[0];
+        var leftIn = document.getElementById("leftIn");
+        var rightIn = document.getElementById("rightIn");
+        var leftOut = document.getElementById("leftOut");
+        var rightOut = document.getElementById("rightOut");
+        var resort = document.getElementById("resort");
+        var input = document.getElementById("input");
+        //创建ul标签
+        var ul = document.createElement("ul");
+        //声明用来存放数据的数组
+        var valueArr = [((Math.random()*100-10)+10).toFixed(0),((Math.random()*100-10)+10).toFixed(0),((Math.random()*100-10)+10).toFixed(0),((Math.random()*100-10)+10).toFixed(0),((Math.random()*100-10)+10).toFixed(0)];
+        wrap.appendChild(ul);
+        btnItem();
+        //创建ul标签
+        var ul = document.createElement("ul");
+
+
+
+
+        //点击事件
+        leftIn.onclick = function(){
+            //获取输入框的值
+            var inputValue = input.value;
+            if(valueArr.length > 59){
+                alert("队列长度过长,无法继续添加");
+            }
+            if(inputValue > 10 && inputValue < 100 && valueArr.length < 59){
+                valueArr.unshift(inputValue);
+                btnItem();
+                console.log(valueArr);
+            }
+            else {
+                alert("输入的数值必须在10~100区间内");
+            }
+        }
+        rightIn.onclick = function(){
+            var inputValue = input.value;
+            if(valueArr.length > 59){
+                alert("队列长度过长,无法继续添加");
+            }
+            if(inputValue > 10 && inputValue < 100 && valueArr.length < 59){
+                valueArr.push(inputValue);
+                btnItem();
+                console.log(valueArr);
+            }
+            else {
+                alert("输入的数值必须在10~100区间内");
+            }
+        }
+        leftOut.onclick = function(){
+            if(valueArr.length == 0){
+                alert("数组为空");
+            }
+            else {
+                var item = valueArr.shift();
+                alert(item + "已移除")
+                btnItem();
+            }
+        }
+        rightOut.onclick = function(){
+            if(valueArr.length == 0){
+                alert("数组为空");
+            }
+            else {
+                var item = valueArr.pop();
+                alert(item + "已移除");
+                btnItem();
+            }
+        }
+        resort.onclick = function () {
+            for(var i = valueArr.length;i > 0;i--)
+            {
+                for(var j = 0;j < i;j++)
+                {
+                    var temp;
+                    if(valueArr[j] > valueArr[j+1]){
+                        temp = valueArr[j];
+                        valueArr[j] = valueArr[j+1];
+                        valueArr[j+1] = temp;
+                    }
+                }
+            }
+            console.log(valueArr);
+            btnItem();
+        }
+        function btnItem(){
+            ul.innerHTML = "";
+            valueArr.forEach(function(item,index,arr){
+                var li = document.createElement("li");
+                var liHeight = item;
+                li.setAttribute("value",index);
+                li.style.height = liHeight + 'px';
+                ul.appendChild(li);
+                wrap.appendChild(ul);
+            })
+        }
+
+        //事件委托处理函数
+
+        ul.onclick = function(event){
+            var target = event.target;
+            var index = target.getAttribute("value");
+            if(target.nodeName.toLowerCase() == "li"){
+                target.remove();
+                var dele = valueArr.splice(index,1);
+            }
+        };
+
+
+
+
+    })();
+</script>
+</body>
+</html>

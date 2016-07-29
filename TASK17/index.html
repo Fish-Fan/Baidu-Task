@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://cdn.bootcss.com/echarts/3.2.2/echarts.common.js"></script>
+</head>
+<body>
+<fieldset id="form-gra-time">
+    <legend>请选择日期粒度：</legend>
+    <label>日<input name="gra-time" value="day" type="radio" checked="checked"></label>
+    <label>周<input name="gra-time" value="week" type="radio"></label>
+    <label>月<input name="gra-time" value="month" type="radio"></label>
+</fieldset>
+
+<fieldset>
+    <legend>请选择查看的城市：</legend>
+    <select id="city-select">
+        <option>北京</option>
+        <option>上海</option>
+        <option>沈阳</option>
+        <option>广州</option>
+        <option>深圳</option>
+        <option>成都</option>
+        <option>西安</option>
+        <option>福州</option>
+        <option>厦门</option>
+    </select>
+</fieldset>
+
+<div class="aqi-chart-wrap">
+    <div id="main" style="width: 1000px;height:400px;"></div>
+</div>
+
+
+
+
+<script type="text/javascript">
+    (function(){
+        //获取用户所选的城市
+        var select = document.getElementById("city-select");
+        var index = select.selectedIndex; //序号，取当前选中选项的序号
+        var city = select.options[index].value;
+        //声明存放AQI指数数组
+        var dataValue = [];
+        //声明日期变量
+        var dateArr = [];
+        //获取日,周,月三个单选按钮
+        var day = document.getElementsByTagName("input")[0];
+        var week = document.getElementsByTagName("input")[1];
+        var month = document.getElementsByTagName("input")[2];
+        //声明检测单选按钮变化的变量
+        var radioBtnChange = 1;
+
+        day.onclick = function(){
+            radioBtnChange = 1;
+            renderChart(city);
+            setChart();
+        }
+        week.onclick = function(){
+            radioBtnChange = 2;
+            renderChart(city);
+            setChart();
+
+        }
+        month.onclick = function(){
+            radioBtnChange = 3;
+            renderChart(city);
+            setChart();
+
+        }
+        //声明一月份每自然周所含天数
+        var jan = [3,7,7,7,7];
+        //声明二月份每自然周所含天数
+        var feb = [7,7,7,7,1];
+        //声明三月份每自然周所含天数
+        var mar = [6,7,7,7,4];
+        //拼接三个月份数组
+        var monthArr = jan.concat(feb).concat(mar);
+        //声明三个月份各自所含的天数
+        var monthsHasDays = [31,29,31];
+
+
+
+        // 以下两个函数用于随机模拟生成测试数据
+        function getDateStr(dat) {
+            var y = dat.getFullYear();
+            var m = dat.getMonth() + 1;
+            m = m < 10 ? '0' + m : m;
+            var d = dat.getDate();
+            d = d < 10 ? '0' + d : d;
+            return y + '-' + m + '-' + d;
+        }
+        function randomBuildData(seed) {
+            var returnData = {};
+            var dat = new Date("2016-01-01");
+            var datStr = '';
+
+            for (var i = 0; i < 92; i++)
+            {
+                datStr = getDateStr(dat);
+                returnData[datStr] = Math.ceil(Math.random() * seed);
+                dat.setDate(dat.getDate() + 1);
+            }
+
+
+
+            return returnData;
+        }
+
+        //数据对象
+        var aqiSourceData = {
+            "北京": randomBuildData(500),
+            "上海": randomBuildData(300),
+            "广州": randomBuildData(200),
+            "深圳": randomBuildData(100),
+            "成都": randomBuildData(300),
+            "西安": randomBuildData(500),
+            "福州": randomBuildData(100),
+            "厦门": randomBuildData(100),
+            "沈阳": randomBuildData(500)
+        };
+
+        //绘制图表函数
+        function renderChart(city){
+            var selectCity = aqiSourceData[city];
+
+
+                for(var item in selectCity)
+                {
+                    dataValue.push(selectCity[item]);
+                }
+
+                for(var item in selectCity)
+                {
+                    dateArr.push(item);
+                }
+
+            if(radioBtnChange == 2){
+
+                countValue(dataValue,monthArr);
+
+            }
+            else if(radioBtnChange == 3){
+                console.log(dataValue);
+                countValue(dataValue,monthsHasDays);
+            }
+
+        }
+
+        function countValue(data,hasDaysCount){
+            var index = 0;
+            var aver = 0;
+            var total = 0;
+            var newDataValue = [];
+            var newDateArr = [];
+            var dat = new Date("2016-01-01");
+            var datStr = '';
+
+            for(var i = 0;i < hasDaysCount.length;i++)
+            {
+                total = 0;
+                datStr = getDateStr(dat);
+                for(var j = 0;j < hasDaysCount[i];j++)
+                {
+                    total += data[index];
+                    index++;
+                }
+                aver = total / hasDaysCount[i];
+                newDataValue.push(aver.toFixed(2));
+                dat.setDate(dat.getDate() + hasDaysCount[i]);
+                newDateArr.push(datStr);
+            }
+            dataValue = newDataValue;
+            dateArr = newDateArr;
+        }
+
+        //初始值为北京
+        renderChart("北京");
+        setChart();
+
+
+
+       function setChart(){
+           // 基于准备好的dom，初始化echarts实例
+           var myChart = echarts.init(document.getElementById('main'));
+
+
+           // 指定图表的配置项和数据
+           var option = {
+               title: {
+                   text: '全国各大城市AQI检测'
+               },
+               tooltip: {},
+               legend: {
+                   data:['AQI']
+               },
+               xAxis: {
+                   data: dateArr
+               },
+               yAxis: {},
+               series: [{
+                   name: 'AQI',
+                   type: 'bar',
+                   data: dataValue
+               }]
+           };
+
+           // 使用刚指定的配置项和数据显示图表。
+           myChart.setOption(option);
+           //重置数组
+           dataValue = [];
+           dateArr = [];
+       }
+
+        //城市选项变化函数
+        select.onchange = function(){
+            dataValue = [];
+            dateArr = [];
+            var i = select.selectedIndex;
+            city = select.options[i].value;
+            renderChart(city);
+            setChart();
+
+        }
+
+
+
+    })();
+</script>
+</body>
+</html>

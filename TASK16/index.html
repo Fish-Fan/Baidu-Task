@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IFE JavaScript Task 01</title>
+</head>
+<body>
+<div>
+    <label>城市名称：<input id="aqi-city-input" type="text"></label><br>
+    <label>空气质量指数：<input id="aqi-value-input" type="text"></label><br>
+    <button id="add-btn">确认添加</button>
+</div>
+<table id="aqi-table">
+    <!--
+      <tr>
+        <td>城市</td><td>空气质量</td><td>操作</td>
+      </tr>
+      <tr>
+        <td>北京</td><td>90</td><td><button>删除</button></td>
+      </tr>
+      <tr>
+        <td>北京</td><td>90</td><td><button>删除</button></td>
+      </tr>
+     -->
+</table>
+<script>
+    //获取城市名称输入框
+    var city = document.getElementById("aqi-city-input");
+    //获取空气质量指数输入框
+    var aqi = document.getElementById("aqi-value-input");
+    //获取添加按钮
+    var addBtn = document.getElementById("add-btn");
+    //获取城市表格
+    var tableCity = document.getElementById("aqi-table");
+    //获取第一个label标签
+    var inputLable = document.getElementsByTagName("label");
+    //添加警示信息
+    var end = document.createElement("span");
+    end.setAttribute("style","color:red");
+
+    //去除前后字符串
+    function trimStr(str){return str.replace(/(^\s*)|(\s*$)/g,"");}
+    //onblur函数
+    city.onblur = function(){
+        var cityName = city.value;
+        var newCityName = trimStr(cityName);
+        var arrCityName = newCityName.split("");
+        var regxChinese =  /[\u4e00-\u9fa5]/;
+        var regxEnglish = /[a-zA-Z]/;
+
+        if(regxChinese.test(arrCityName[0])){
+            for(var i=0;i < arrCityName.length;i++)
+            {
+                if(!regxChinese.test(arrCityName[i]) ){
+                    end.innerHTML = "请输入正确的城市名称";
+                    inputLable[0].appendChild(end);
+                    addBtn.disabled = true;
+
+                }
+
+            }
+        }
+
+
+        else if(regxEnglish.test(arrCityName[0])){
+           for(var i=0;i < arrCityName.length;i++)
+           {
+              if(!regxEnglish.test(arrCityName[i])){
+                  end.innerHTML = "请输入正确的城市名称";
+                  inputLable[0].appendChild(end);
+                  addBtn.disabled = true;
+              }
+           }
+        }
+
+
+    }
+    //onfocus函数
+    city.onfocus = function() {
+        if(inputLable[0].hasChildNodes(end)){
+            end.innerHTML = "";
+        }
+    }
+    //onblur函数
+    aqi.onblur = function(){
+        var aqiValue = aqi.value;
+        var regxFloat = /^-?([1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0)$/;
+        if(regxFloat.test(aqiValue)){
+            end.innerHTML = "空气质量指数必须为整数";
+            inputLable[1].appendChild(end);
+            addBtn.disabled = true;
+
+        }
+    }
+    //添加城市列表函数
+    function addCity(){
+        var cityName = city.value;
+        var aqiValue = aqi.value;
+        var deleteBtn = document.createElement("button");
+        deleteBtn.innerHTML = "删除";
+        deleteBtn.setAttribute("class","bg-color");
+
+
+        var tr = document.createElement("tr");
+        var tdCity = document.createElement("td");
+        var tdAqi = document.createElement("td");
+        var tdBtn = document.createElement("td");
+
+        tdCity.innerHTML = cityName;
+        tdAqi.innerHTML = aqiValue;
+        tdBtn.appendChild(deleteBtn);
+
+        tr.appendChild(tdCity);
+        tr.appendChild(tdAqi);
+        tr.appendChild(tdBtn);
+        tableCity.appendChild(tr);
+    }
+    tableCity.onclick = function(event){
+        var target = event.target;
+        if(target.getAttribute("class") == "bg-color"){
+            target.parentNode.parentNode.remove();
+        }
+    }
+
+    //确认添加函数
+    addBtn.onclick = function(){
+        addCity();
+    }
+
+</script>
+</body>
+</html>
