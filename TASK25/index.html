@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>树形菜单</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
+    <style>
+        .wrap{
+            width: 300px;
+            margin: 30px auto;
+        }
+        ul{
+            list-style-type: none;
+        }
+        li{
+            cursor: pointer;
+        }
+        .level1 li{
+            margin-top: 10px;
+        }
+        .level1{
+            font-size: 18px;
+        }
+        .level2{
+            margin-left: 5px;
+            font-size: 14px;
+        }
+        .level3{
+            margin-left: 10px;
+            font-size: 12px;
+        }
+        .show{
+            display: block;
+        }
+        .hidden{
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <fieldset>
+        <legend>树形菜单</legend>
+        <ul class="level1">
+            <li>
+                <i class="fa fa-shield fa-rotate-270"></i> 一级菜单
+                <ul class="level2 hidden">
+                    <li>
+                        <i class="fa fa-shield fa-rotate-270"></i> 二级菜单
+                        <ul class="level3">
+                            <li>
+                                <i class="fa fa-shield fa-rotate-270"></i> 三级菜单
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <i class="fa fa-shield fa-rotate-270"></i> 二级菜单
+                        <ul class="level3">
+                            <li>
+                                <i class="fa fa-shield fa-rotate-270"></i> 三级菜单
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <i class="fa fa-shield fa-rotate-270"></i> 二级菜单
+                        <ul class="level3">
+                            <li>
+                                <i class="fa fa-shield fa-rotate-270"></i> 三级菜单
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <i class="fa fa-shield fa-rotate-270"></i> 二级菜单
+                        <ul class="level3">
+                            <li>
+                                <i class="fa fa-shield fa-rotate-270"></i> 三级菜单
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <i class="fa fa-shield fa-rotate-270"></i> 一级菜单
+                <ul class="level2 hidden">
+                    <li>
+                        <i class="fa fa-shield fa-rotate-270"></i> 二级菜单
+                        <ul class="level3">
+                            <li>
+                                <i class="fa fa-shield fa-rotate-270"></i> 三级菜单
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <i class="fa fa-shield fa-rotate-270"></i> 一级菜单
+                <ul class="level2 hidden">
+                    <li>
+                        <i class="fa fa-shield fa-rotate-270"></i> 二级菜单
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </fieldset>
+</div>
+<script>
+    (function(){
+       //获取元素
+        var ulLv1 = document.getElementsByClassName("level1")[0];
+        var liLv1 = ulLv1.getElementsByTagName("li")[0];
+        var iconLv1 = ulLv1.getElementsByTagName("i");
+
+
+        //单击事件
+        ulLv1.onclick = function(e){
+            var target = e.target;
+            if(target.nodeName == "LI"){
+
+                toggle(target);
+            }
+        };
+
+
+        //toggle函数
+        function toggle(node){
+            var ulChild = node.getElementsByTagName("ul")[0];
+            var icon = node.getElementsByTagName("i")[0];
+            if(icon.getAttribute("class") == "fa fa-shield fa-flip-horizontal"){
+                icon.setAttribute("class","fa fa-shield fa-rotate-270");
+                ulChild.setAttribute("class","hidden");
+            }
+            else if(icon.getAttribute("class") == "fa fa-shield fa-rotate-270"){
+                icon.setAttribute("class","fa fa-shield fa-flip-horizontal");
+                ulChild.setAttribute("class","show");
+                var newNode = node;
+                close(newNode);
+
+            }
+
+        }
+        //闭合子菜单函数
+        function close(node){
+            var ulChild = node.getElementsByTagName("ul")[0];
+            var ulChildLi = ulChild.getElementsByTagName("li");
+            for(var i=0;i < ulChildLi.length;i++)
+            {
+                var ulGrand = ulChildLi[i].getElementsByTagName("ul")[0];
+                var icon = ulChildLi[i].getElementsByTagName("i")[0];
+
+
+                
+                icon.setAttribute("class","fa fa-shield fa-rotate-270");
+
+            }
+        }
+
+
+
+    })();
+</script>
+</body>
+</html>
