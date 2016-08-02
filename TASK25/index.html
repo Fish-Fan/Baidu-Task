@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" type="text/css">
     <style>
         .wrap{
-            width: 300px;
+            width: 350px;
             margin: 30px auto;
         }
         ul{
@@ -23,11 +23,9 @@
         }
         .level2{
             margin-left: 5px;
-            font-size: 14px;
         }
         .level3{
             margin-left: 10px;
-            font-size: 12px;
         }
         .show{
             display: block;
@@ -35,69 +33,87 @@
         .hidden{
             display: none;
         }
-
+        p{
+            display: inline;
+        }
+        .add{
+            display: none;
+        }
+        .dele{
+            display: none;
+        }
+        li div:hover{
+            color: #1e6bb8;
+        }
+        li div:hover .add{
+            display: inline;
+        }
+        li div:hover .dele{
+            display: inline;
+        }
     </style>
 </head>
 <body>
 <div class="wrap">
     <fieldset>
         <legend>树形菜单</legend>
+        查找节点: <input type="text" id="search">
         <ul class="level1">
-            <li>
-                <i class="fa fa-shield fa-rotate-270"></i> 一级菜单
+            <li class="li">
+                <div><i class="fa fa-shield fa-rotate-270"></i> <p>一级菜单</p><button class="dele">删除</button><button class="add">添加</button></div>
                 <ul class="level2 hidden">
-                    <li>
-                        <i class="fa fa-shield fa-rotate-270"></i> 二级菜单
+                    <li class="li">
+                        <div><i class="fa fa-shield fa-rotate-270"></i> <p>二级菜单</p> <button class="dele">删除</button><button class="add">添加</button></div>
                         <ul class="level3">
-                            <li>
-                                <i class="fa fa-shield fa-rotate-270"></i> 三级菜单
+                            <li class="li">
+                                 <div><p>三级菜单</p> <button class="dele">删除</button><button class="add">添加</button></div>
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <i class="fa fa-shield fa-rotate-270"></i> 二级菜单
+                    <li class="li">
+                        <div><i class="fa fa-shield fa-rotate-270"></i> <p>二级菜单</p> <button class="dele">删除</button><button class="add">添加</button></div>
                         <ul class="level3">
-                            <li>
-                                <i class="fa fa-shield fa-rotate-270"></i> 三级菜单
+                            <li class="li">
+                                 <div><p>三级菜单</p> <button class="dele">删除</button><button class="add">添加</button></div>
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <i class="fa fa-shield fa-rotate-270"></i> 二级菜单
+                    <li class="li">
+                        <div><i class="fa fa-shield fa-rotate-270"></i> <p>二级菜单</p> <button class="dele">删除</button><button class="add">添加</button></div>
                         <ul class="level3">
-                            <li>
-                                <i class="fa fa-shield fa-rotate-270"></i> 三级菜单
+                            <li class="li">
+                                 <div><p>三级菜单</p> <button class="dele">删除</button><button class="add">添加</button></div>
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <i class="fa fa-shield fa-rotate-270"></i> 二级菜单
+                    <li class="li">
+                        <div><i class="fa fa-shield fa-rotate-270"></i> <p>二级菜单</p> <button class="dele">删除</button><button class="add">添加</button></div>
                         <ul class="level3">
-                            <li>
-                                <i class="fa fa-shield fa-rotate-270"></i> 三级菜单
+                            <li class="li">
+                                 <div><p>三级菜单</p> <button class="dele">删除</button><button class="add">添加</button></div>
                             </li>
                         </ul>
                     </li>
                 </ul>
             </li>
-            <li>
-                <i class="fa fa-shield fa-rotate-270"></i> 一级菜单
+            <li class="li">
+                <div><i class="fa fa-shield fa-rotate-270"></i> <p>一级菜单</p> <button class="dele">删除</button><button class="add">添加</button></div>
                 <ul class="level2 hidden">
-                    <li>
-                        <i class="fa fa-shield fa-rotate-270"></i> 二级菜单
+                    <li class="li">
+                        <div><i class="fa fa-shield fa-rotate-270"></i> <p>二级菜单</p> <button class="dele">删除</button><button class="add">添加</button></div>
                         <ul class="level3">
-                            <li>
-                                <i class="fa fa-shield fa-rotate-270"></i> 三级菜单
+                            <li class="li">
+                                 <div><p>三级菜单</p> <button class="dele">删除</button><button class="add">添加</button></div>
                             </li>
                         </ul>
                     </li>
                 </ul>
             </li>
-            <li>
-                <i class="fa fa-shield fa-rotate-270"></i> 一级菜单
+            <li class="li">
+                <div><i class="fa fa-shield fa-rotate-270"></i> <p>一级菜单</p> <button class="dele">删除</button><button class="add">添加</button></div>
                 <ul class="level2 hidden">
-                    <li>
-                        <i class="fa fa-shield fa-rotate-270"></i> 二级菜单
+                    <li class="li">
+                        <div><i class="fa fa-shield fa-rotate-270"></i> <p>二级菜单</p> <button class="dele">删除</button><button class="add">添加</button></div>
                     </li>
                 </ul>
             </li>
@@ -106,22 +122,22 @@
 </div>
 <script>
     (function(){
-       //获取元素
+        //获取元素
         var ulLv1 = document.getElementsByClassName("level1")[0];
         var liLv1 = ulLv1.getElementsByTagName("li")[0];
         var iconLv1 = ulLv1.getElementsByTagName("i");
+        var search = document.getElementById("search");
+        var nodeList = [];
+        var pList = document.getElementsByTagName("p");
 
 
         //单击事件
         ulLv1.onclick = function(e){
             var target = e.target;
-            if(target.nodeName == "LI"){
-
-                toggle(target);
+            if(target.nodeName == "P"){
+                toggle(target.parentNode.parentNode);
             }
         };
-
-
         //toggle函数
         function toggle(node){
             var ulChild = node.getElementsByTagName("ul")[0];
@@ -133,30 +149,69 @@
             else if(icon.getAttribute("class") == "fa fa-shield fa-rotate-270"){
                 icon.setAttribute("class","fa fa-shield fa-flip-horizontal");
                 ulChild.setAttribute("class","show");
-                var newNode = node;
-                close(newNode);
-
-            }
-
-        }
-        //闭合子菜单函数
-        function close(node){
-            var ulChild = node.getElementsByTagName("ul")[0];
-            var ulChildLi = ulChild.getElementsByTagName("li");
-            for(var i=0;i < ulChildLi.length;i++)
-            {
-                var ulGrand = ulChildLi[i].getElementsByTagName("ul")[0];
-                var icon = ulChildLi[i].getElementsByTagName("i")[0];
-
-
-                
-                icon.setAttribute("class","fa fa-shield fa-rotate-270");
-
             }
         }
+//        //mouseover函数
+//        ulLv1.onmouseover = function(e){
+//            var target = e.target;
+//            if(target.nodeName == "DIV"){
+//                var deleBtn = document.getElementById("dele");
+//                var addBtn = document.getElementById("add");
+//            }
+//        }
+//        //mouseout函数
+//        ulLv1.onmouseout = function(e){
+//            var target = e.target;
+//            if(target.nodeName == "DIV"){
+//
+//            }
+//        }
+        //删除函数
+        function deleItem(node){
+           // node.parentNode.parentNode.remove();
+            alert("111");
+        }
+        var deleBtn = document.getElementsByClassName("dele");
+        for(var i = 0;i < deleBtn.length;i++)
+        {
+            deleBtn[i].addEventListener("onclick",function(e){
+                e.parentNode.parentNode.remove();
+            });
+        }
+
+        //键盘事件
+        search.onkeyup = function(event){
+            if(event.keyCode == 13){
+                var searchValue = search.value;
+                postOrder(ulLv1);
+                console.log(nodeList);
+                var flag = 0;
+                for(var i=0;i < nodeList.length;i++)
+                {
+                    if(nodeList[i].textContent == searchValue){
+                        nodeList[i].style.backgroundColor = "blue";
+                        flag++;
+                    }
+
+                }
+                if(flag == 0){
+                    alert("无符合条件的节点")
+                }
 
 
-
+            }
+        }
+        //广度优先遍历函数
+        function postOrder(node){
+            if(!(node == null)){
+                if(node.nodeName == "P"){
+                    nodeList.push(node);
+                }
+                postOrder(node.nextElementSibling);
+                postOrder(node.firstElementChild);
+            }
+        }
+//
     })();
 </script>
 </body>

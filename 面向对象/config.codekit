@@ -10,17 +10,6 @@
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
-		},
-	"\/min\/jquery1.9-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/min\/jquery1.9-min.js",
-		"outputAbbreviatedPath": "\/min\/min\/jquery1.9-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
 		}
 	},
 "hooks": [
@@ -30,9 +19,9 @@
 	},
 "projectAttributes": {
 	"bowerAbbreviatedPath": "",
-	"displayValue": "TASK25",
+	"displayValue": "面向对象",
 	"displayValueWasSetByUser": 0,
-	"iconImageName": "globe_orange"
+	"iconImageName": "compass_yellow"
 	},
 "projectSettings": {
 	"alwaysUseExternalServer": 0,

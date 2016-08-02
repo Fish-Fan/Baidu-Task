@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表单工厂</title>
+    <style>
+        fieldset{
+            margin-top: 10px;
+        }
+        .ljf{
+            position: relative;
+            left: 5px;
+        }
+        fieldset input{
+            margin-left: 15px;
+            margin-top: 10px;
+        }
+        .left{
+            width: 300px;
+            float: left;
+        }
+        .right{
+            width: 700px;
+            float: left;
+            border: 2px solid #1d3e81;
+            border-radius: 10px;
+            margin-left: 60px;
+            text-align: center;
+        }
+        .add{
+            font-size: 18px;
+            width: 80px;
+            height: 40px;
+            line-height: 40px;
+            border: 1px solid #1e6bb8;
+            border-radius: 5px;
+            background-color: #1e6bb8;
+            color: #fff;
+            outline: none;
+            margin-top: 30px;
+        }
+        #partName{
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+<div class="left">
+    <fieldset id="fieldsetType">
+        <legend>类型</legend>
+        <input type="radio" name="Ktype" id="inputK" checked="checked">输入框
+        <input type="radio" name="Ktype" id="radioK">单选框
+        <input type="radio" name="Ktype" id="multiplyK">多选框
+        <input type="radio" name="Ktype" id="pullDownK">下拉框
+        <input type="radio" name="Ktype" id="textArea">文本域
+    </fieldset>
+    <fieldset id="fieldsetCon">
+        <legend>配置</legend>
+        <label>名称:</label>
+        <input type="text" id="partName">
+        <input type="radio" name="configuration" id="necessary" checked="checked">必填
+        <input type="radio" name="configuration" id="noNecessary">选填
+        <label>样式</label>
+        <select name="class">
+            <option value="class1">样式一</option>
+            <option value="class2">样式二</option>
+        </select>
+    </fieldset>
+    <fieldset id="fieldsetRule">
+        <legend>规则</legend>
+        <input type="radio" name="type" id="word" checked="checked">文字
+        <input type="radio" name="type" id="number">数字
+        <input type="radio" name="type" id="mailBox">邮箱
+        <input type="radio" name="type" id="cellNum">电话号码
+        <input type="radio" name="type" id="password">密码
+    </fieldset>
+    <fieldset id="fieldsetLength">
+        <legend>长度限制</legend>
+        <label>字符范围:</label>
+        <input type="text" style="width: 50px" id="rangeFront"> <span class="ljf">--</span> <input type="text" style="width: 50px" id="rangeLast">
+    </fieldset>
+    <fieldset id="fieldsetOption">
+        <legend>选项</legend>
+        <input id="radioSelect" type="text" placeholder="可用空格,逗号,回车来分格选项" style="width: 200px">
+        <div id="selectHolder">
+
+        </div>
+    </fieldset>
+    <button class="add">add</button>
+</div>
+<div class="right">
+    <h2>表单展示区</h2>
+</div>
+<script>
+    (function(){
+        //获取元素
+        var fieldsetType = document.getElementById("fieldsetType");
+        var inputK = document.getElementById("inputK");
+        var radioK = document.getElementById("radioK");
+        var multiplyK = document.getElementById("multiplyK");
+        var pullDownK = document.getElementById("pullDownK");
+        var textArea = document.getElementById("textArea");
+
+        var fieldsetCon = document.getElementById("fieldsetCon");
+        var partName = document.getElementById("partName");
+        var noNecessary = document.getElementById("noNecessary");
+        var necessary = document.getElementById("necessary");
+
+        var fieldsetRule = document.getElementById("fieldsetRule");
+        var word = document.getElementById("word");
+        var number = document.getElementById("number");
+        var mailBox = document.getElementById("mailBox");
+        var cellNum = document.getElementById("cellNum");
+        var password = document.getElementById("password");
+
+        var fieldsetLength = document.getElementById("fieldsetLength");
+        var rangeFront = document.getElementById("rangeFront");
+        var rangeLast = document.getElementById("rangeLast");
+
+        var fieldsetOption = document.getElementById("fieldsetOption");
+        var radioSelect = document.getElementById("radioSelect");
+        var selectHolder = document.getElementById("selectHolder");
+
+        function funInputK(){
+            if(inputK.getAttribute("checked")){
+                fieldsetOption.style.display = "none";
+                partName.value = "姓名";
+
+            }
+        }
+        funInputK();
+
+
+        //add函数
+        function add(){
+
+        }
+    })();
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>面向对象</title>
+</head>
+<body>
+<script>
+    (function(){
+       function People(name,sex){
+           this._name = name;
+           this._sex = sex;
+           People.prototype.age = 29;
+           People.prototype.say = function(){
+               alert("This is people speaking!"+this._name);
+           }
+
+       }
+        function Student(name,sex){
+            this._name = name;
+            this._sex = sex;
+
+        }
+
+        Student.prototype = new People();
+        var superSay = Student.prototype.say;
+
+        Student.prototype.say = function(){
+//            superSay();
+            alert("This is student speaking!"+this._sex+this._name);
+        }
+
+        //superSay();
+//        var robot1 = new People("Jack","woman");
+        var robot2 = new People("Sam","man");
+//        console.log(robot1.name,robot1.age,robot1._sex);
+//        console.log(robot2.name,robot2.age,robot2._sex);
+//        robot1.say();
+//        robot1.sayName();
+//        robot2.sayName();
+        var student1 = new Student("StuJack","woman");
+        var student2 = new Student("StuSam","man");
+        console.log(student1._name);
+        console.log(student2._sex);
+        student1.say();
+        robot2.say();
+        console.log(student1.age);
+    }())
+</script>
+</body>
+</html>
