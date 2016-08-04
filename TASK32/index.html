@@ -11,6 +11,13 @@
             position: relative;
             left: 5px;
         }
+        .selectHolderDiv{
+            border: 1px solid sienna;
+            display: inline-block;
+            margin: 5px;
+            padding: 5px;
+            cursor: pointer;
+        }
         fieldset input{
             margin-left: 15px;
             margin-top: 10px;
@@ -27,6 +34,10 @@
             margin-left: 60px;
             text-align: center;
         }
+        .container{
+            width: 600px;
+            margin: 10px auto;
+        }
         .add{
             font-size: 18px;
             width: 80px;
@@ -41,6 +52,31 @@
         }
         #partName{
             width: 200px;
+        }
+        .right input{
+            width: 250px;
+            height: 25px;
+            line-height: 25px;
+            border: 1px solid #1e6bb8;
+            border-radius: 5px;
+            outline: none;
+            padding: 0 5px;
+        }
+        .right .innerBox{
+            vertical-align: middle;
+        }
+        .right label{
+            margin-right: 20px;
+        }
+        .right .check{
+            width: 25px;
+            height: 25px;
+        }
+        .right .noPass,.right .alert{
+            color: darkred;
+        }
+        .right .pass{
+            color: #55a532;
         }
     </style>
 </head>
@@ -81,7 +117,7 @@
     </fieldset>
     <fieldset id="fieldsetOption">
         <legend>选项</legend>
-        <input id="radioSelect" type="text" placeholder="可用空格,逗号,回车来分格选项" style="width: 200px">
+        <textarea id="radioSelect" placeholder="可用空格,逗号来分隔选项,按回车键输入完毕" style="width: 200px"></textarea>
         <div id="selectHolder">
 
         </div>
@@ -90,6 +126,9 @@
 </div>
 <div class="right">
     <h2>表单展示区</h2>
+    <div class="container">
+
+    </div>
 </div>
 <script>
     (function(){
@@ -106,6 +145,7 @@
         var noNecessary = document.getElementById("noNecessary");
         var necessary = document.getElementById("necessary");
 
+
         var fieldsetRule = document.getElementById("fieldsetRule");
         var word = document.getElementById("word");
         var number = document.getElementById("number");
@@ -121,20 +161,350 @@
         var radioSelect = document.getElementById("radioSelect");
         var selectHolder = document.getElementById("selectHolder");
 
-        function funInputK(){
-            if(inputK.getAttribute("checked")){
-                fieldsetOption.style.display = "none";
-                partName.value = "姓名";
+        var addBtn = document.getElementsByClassName("add")[0];
+        var right = document.getElementsByClassName("right")[0];
+        var container = document.getElementsByClassName("container")[0];
 
+        //调整左侧DOM
+        var typeNum = 1;
+        inputK.onclick = function(){
+            fieldsetCon.style.display = "block";
+            fieldsetRule.style.display = "block";
+            fieldsetOption.style.display = "none";
+            fieldsetOption.style.display = "none";
+            typeNum = 1;
+        }
+        radioK.onclick = function(){
+            reset();
+            fieldsetOption.style.display = "block";
+            fieldsetRule.style.display = "none";
+            fieldsetLength.style.display = "none";
+            typeNum = 2;
+        }
+        multiplyK.onclick = function(){
+            reset();
+            fieldsetOption.style.display = "block";
+            fieldsetRule.style.display = "none";
+            fieldsetLength.style.display = "none";
+            typeNum = 3;
+        }
+        pullDownK.onclick = function(){
+            reset();
+            fieldsetOption.style.display = "block";
+            fieldsetRule.style.display = "none";
+            fieldsetLength.style.display = "none";
+            typeNum = 4;
+        }
+        textArea.onclick = function(){
+            fieldsetCon.style.display = "block";
+            fieldsetLength.style.display = "block";
+            fieldsetRule.style.display = "none";
+            fieldsetOption.style.display = "none";
+            typeNum = 5;
+        }
+
+
+        password.onclick = function(){
+            fieldsetLength.style.display = "block";
+        }
+        word.onclick = function(){
+            fieldsetLength.style.display = "none";
+        }
+        number.onclick = function(){
+            fieldsetLength.style.display = "none";
+        }
+        mailBox.onclick = function(){
+            fieldsetLength.style.display = "none";
+        }
+        cellNum.onclick = function(){
+            fieldsetLength.style.display = "none";
+        }
+        //触发add函数
+        addBtn.onclick = function(){
+            add();
+        }
+        //初始化使选项<fieldeset>消失
+        if(inputK.getAttribute("checked") == "checked"){
+            fieldsetOption.style.display = "none";
+            fieldsetLength.style.display = "none";
+
+        }
+
+
+
+
+
+
+
+        function returnIsNecessary(){
+            if(necessary.checked){
+                return "necessary";
+            }
+            else if(noNecessary.checked){
+                return "noNecessary";
             }
         }
-        funInputK();
+        function checkEmpty(node,parentNode){
+            if(node.value == ""){
+                var alertNode = createAlertNode("span");
+                alertNode.innerHTML = "该项为必填项";
+                parentNode.appendChild(alertNode);
+            }
+        }
+
+
+
+
+        function returnRuleName(){
+            if(word.checked){
+                return "text";
+            }
+            else if(number.checked){
+                return "number";
+            }
+            else if(mailBox.checked){
+                return "mailBox";
+            }
+            else if(cellNum.checked){
+                return "cellNum";
+            }
+            else if(password.checked){
+                return "password";
+            }
+        }
+
+        function createAlertNode(nodeType){
+            //显示警告信息
+            var alertP = document.createElement(nodeType);
+            alertP.setAttribute("class","alert");
+            return alertP;
+        }
+        function checkRule(inputValue,checkType){
+
+            var reg = new RegExp();
+
+            if(checkType == "mailBox"){
+                reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+                if(reg.test(inputValue)){
+                    return "<span class='pass'>格式正确</span>"
+                }
+                else {
+                    return "<span class='noPass'>邮箱格式不正确,请输入正确的邮箱格式</span>"
+                }
+            }
+            else if(checkType == "cellNum"){
+                reg = /^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/;
+                if(reg.test(inputValue)){
+                    return "<span class='pass'>格式正确</span>"
+                }
+                else {
+                    return "<span class='noPass'>手机号格式不正确,请输入正确的手机号格式</span>"
+                }
+            }
+            else if(checkType == "password"){
+                var minLength = rangeFront.value;
+                var maxLength = rangeLast.value;
+                if(inputValue.length < minLength || inputValue.length > maxLength){
+                    return "<span class='noPass'>长度需要在" + minLength + "和" + maxLength + "之间</span>"
+                }
+                else {
+                    return "<span class='pass'>格式正确</span>"
+                }
+            }
+            else if(checkType == "text"){
+                return "";
+            }
+            else if(checkType == "number"){
+                return "";
+            }
+
+
+        }
+
+
+
+        //选项操作
+        var valueArr = [];
+        radioSelect.onkeyup = function(event){
+           if(event.keyCode == 13){
+               //获取textarea的内容
+               var value = radioSelect.value.trim();
+               var arr = value.split(/[^0-9a-zA-Z\u4e00-\u9fa5]+/);
+               valueArr = valueArr.concat(arr);
+               console.log(valueArr);
+
+               render();
+           }
+        }
+
+
+        function render(){
+            selectHolder.innerHTML = valueArr.map(function(e,index){
+                if(valueArr.length > 0){
+                    return "<div class='selectHolderDiv' value=" + index + ">" + e + "</div>";
+                }
+            }).join('');
+
+        }
+
+        selectHolder.onclick = function(){
+            var target  = event.target;
+            if(target.getAttribute("class") == "selectHolderDiv"){
+                valueArr.splice(target.getAttribute("value"),1);
+                target.remove();
+            }
+        }
+        //onmouseover事件
+        selectHolder.onmouseover = function(event){
+            var target  = event.target;
+            if(target.getAttribute("class") == "selectHolderDiv"){
+                var value = target.innerHTML;
+                target.innerHTML = "点击删除" + value;
+            }
+        }
+        //onmouseleave事件
+        selectHolder.onmouseout = function(event){
+            var target = event.target;
+            if(target.getAttribute("class") == "selectHolderDiv"){
+                var value = target.innerHTML;
+                target.innerHTML = value.replace("点击删除","");
+            }
+        }
+
+
+
+
+
+
+
+        function renderForm(labelName,createEleName,inputType){
+            var div = document.createElement("div");
+            div.setAttribute("class","innerBox");
+
+
+            if(typeNum == 1 || typeNum == 5){
+                //设置表单前的<label>标签
+                var label = document.createElement("label");
+                var labelText = document.createTextNode(labelName);
+                label.appendChild(labelText);
+                div.appendChild(label);
+                //创建表单元素
+                var createELe = document.createElement(createEleName);
+                createELe.setAttribute("class","inputK");
+                createELe.setAttribute("type",inputType);
+                createELe.setAttribute("isNecessary",returnIsNecessary());
+                createELe.setAttribute("checkType",returnRuleName());
+                //添加事件侦听器
+                createELe.addEventListener("blur",function(){
+
+                    if(createELe.nextElementSibling == null){
+                        var alertNode = createAlertNode("p");
+                        if(createELe.getAttribute("isNecessary")){
+                            console.log("必填项");
+                            checkEmpty(createELe,alertNode);
+                        }
+
+                        div.appendChild(alertNode);
+                        alertNode.innerHTML += checkRule(createELe.value,createELe.getAttribute("checkType"));
+                    }
+                });
+                createELe.addEventListener("focus",function(){
+                    var alertNode = createELe.nextElementSibling;
+                    if(alertNode != null){
+                        alertNode.remove();
+                    }
+                })
+                div.appendChild(createELe);
+            }
+            else if(typeNum == 2 || typeNum == 3){
+                //设置表单前的<label>标签
+                var label = document.createElement("label");
+                var labelText = document.createTextNode(labelName);
+                label.appendChild(labelText);
+                div.appendChild(label);
+                for(var i = 0;i < valueArr.length;i++)
+                {
+
+                    //设置每一个选项前的<label>标签
+                    var label = document.createElement("label");
+                    var labelText = document.createTextNode(valueArr[i]);
+                    label.appendChild(labelText);
+                    div.appendChild(label);
+                    //创建表单元素
+                    var createELe = document.createElement(createEleName);
+                    createELe.setAttribute("class","check");
+                    createELe.setAttribute("name",partName.value);
+                    createELe.setAttribute("type",inputType);
+                    createELe.setAttribute("checkType",returnRuleName());
+                    div.appendChild(createELe);
+                }
+            }
+            else if(typeNum == 4){
+                var select = document.createElement("select");
+                select.setAttribute("checkType",returnRuleName());
+                //设置表单前的<label>标签
+                var label = document.createElement("label");
+                var labelText = document.createTextNode(labelName);
+                label.appendChild(labelText);
+                div.appendChild(label);
+                for(var i = 0;i < valueArr.length;i++)
+                {
+
+
+                    //创建表单元素
+                    var createELe = document.createElement(createEleName);
+                    var optionInner = document.createTextNode(valueArr[i]);
+                    createELe.appendChild(optionInner);
+                    select.appendChild(createELe);
+                    div.appendChild(select);
+                }
+            }
+
+
+            container.appendChild(div);
+        }
+
 
 
         //add函数
         function add(){
 
+            if(typeNum == 1){
+                var inputNN = returnRuleName();
+                console.log(inputNN);
+               renderForm(partName.value,"input",inputNN);
+            }
+            else if(typeNum == 2){
+                renderForm(partName.value,"input","radio");
+            }
+            else if(typeNum == 3){
+                renderForm(partName.value,"input","checkbox");
+            }
+            else if(typeNum == 4){
+                renderForm(partName.value,"option");
+            }
+            else if(typeNum == 5){
+                renderForm(partName.value,"textarea");
+            }
+
+
+
+
         }
+
+
+
+        //reset函数
+        function reset(){
+            valueArr = [];
+            selectHolder.innerHTML = "";
+        }
+
+
+
+
+
+
     })();
 </script>
 </body>
