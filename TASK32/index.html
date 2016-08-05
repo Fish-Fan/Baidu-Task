@@ -32,6 +32,12 @@
             border: 2px solid #1d3e81;
             border-radius: 10px;
             margin-left: 60px;
+        }
+        .right .innerBox{
+            width: 300px;
+            margin: 5px auto;
+        }
+        .right h2{
             text-align: center;
         }
         .container{
@@ -53,6 +59,10 @@
         #partName{
             width: 200px;
         }
+        .right .titleLabel{
+            color: #1d3e81;
+            font-weight: 700;
+        }
         .right input{
             width: 250px;
             height: 25px;
@@ -66,11 +76,13 @@
             vertical-align: middle;
         }
         .right label{
-            margin-right: 20px;
+            margin-right: 3px;
         }
         .right .check{
-            width: 25px;
-            height: 25px;
+            width: 14px;
+            height: 14px;
+            margin-left: 3px;
+            margin-right: 10px;
         }
         .right .noPass,.right .alert{
             color: darkred;
@@ -320,6 +332,16 @@
 
 
         }
+        function checkRange(inputValue){
+            var minLength = rangeFront.value;
+            var maxLength = rangeLast.value;
+            if(inputValue.length < minLength || inputValue.length > maxLength){
+                return "<span class='noPass'>长度需要在" + minLength + "和" + maxLength + "之间</span>"
+            }
+            else {
+                return "<span class='pass'>格式正确</span>"
+            }
+        }
 
 
 
@@ -387,6 +409,7 @@
                 var label = document.createElement("label");
                 var labelText = document.createTextNode(labelName);
                 label.appendChild(labelText);
+                label.setAttribute("class","titleLabel");
                 div.appendChild(label);
                 //创建表单元素
                 var createELe = document.createElement(createEleName);
@@ -406,6 +429,9 @@
 
                         div.appendChild(alertNode);
                         alertNode.innerHTML += checkRule(createELe.value,createELe.getAttribute("checkType"));
+                        if(typeNum == 5){
+                            alertNode.innerHTML += checkRange(createELe.value);
+                        }
                     }
                 });
                 createELe.addEventListener("focus",function(){
@@ -421,6 +447,7 @@
                 var label = document.createElement("label");
                 var labelText = document.createTextNode(labelName);
                 label.appendChild(labelText);
+                label.setAttribute("class","titleLabel");
                 div.appendChild(label);
                 for(var i = 0;i < valueArr.length;i++)
                 {
@@ -445,6 +472,7 @@
                 //设置表单前的<label>标签
                 var label = document.createElement("label");
                 var labelText = document.createTextNode(labelName);
+                label.setAttribute("class","titleLabel");
                 label.appendChild(labelText);
                 div.appendChild(label);
                 for(var i = 0;i < valueArr.length;i++)
