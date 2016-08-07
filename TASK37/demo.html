@@ -1,47 +1,36 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <style type="text/css">
-        #boxA, #boxB {
-            float:left;padding:10px;margin:10px;-moz-user-select:none;
-        }
-        #boxA { background-color: #6633FF; width:75px; height:75px;  }
-        #boxB { background-color: #FF6699; width:150px; height:150px; }
-    </style>
-    <script type="text/javascript">
-        function dragStart(ev) {
-            ev.dataTransfer.effectAllowed='move';
-            ev.dataTransfer.setData("Text", ev.target.getAttribute('id'));
-            ev.dataTransfer.setDragImage(ev.target,0,0);
-            return true;
-        }
-        function dragEnter(ev) {
-            event.preventDefault();
-            return true;
-        }
-        function dragOver(ev) {
-            return false;
-        }
-        function dragDrop(ev) {
-            var src = ev.dataTransfer.getData("Text");
-            ev.target.appendChild(document.getElementById(src));
-            ev.stopPropagation();
-            return false;
-        }
-    </script>
+    <meta charset="UTF-8">
+    <title>测量屏幕宽和高</title>
 </head>
 <body>
-<center>
-    <h2>Drag and drop HTML5 demo</h2>
-    <div>Try to move the purple box into the pink box.</div>
+<script>
+    function getInfo()
+    {
+        var s = "";
+        s = " 网页可见区域宽："+ document.body.clientWidth;
+        s = " 网页可见区域高："+ document.body.clientHeight;
+        s = " 网页可见区域宽："+ document.body.offsetWidth+ " (包括边线和滚动条的宽)";
+        s = " 网页可见区域高："+ document.body.offsetHeight+ " (包括边线的宽)";
+        s = " 网页正文全文宽："+ document.body.scrollWidth;
+        s = " 网页正文全文高："+ document.body.scrollHeight;
+        s = " 网页被卷去的高(ff)："+ document.body.scrollTop;
+        s = " 网页被卷去的高(ie)：" +document.documentElement.scrollTop;
+        s = " 网页被卷去的左："+ document.body.scrollLeft;
+        s = " 网页正文部分上："+ window.screenTop;
+        s = " 网页正文部分左："+ window.screenLeft;
+        s = " 屏幕分辨率的高："+ window.screen.height;
+        s = " 屏幕分辨率的宽："+ window.screen.width;
+        s = " 屏幕可用工作区高度："+ window.screen.availHeight;
+        s = " 屏幕可用工作区宽度："+ window.screen.availWidth;
 
-    <div id="boxA" draggable="true"
-         ondragstart="return dragStart(event)">
-        <p>Drag Me</p>
-    </div>
-    <div id="boxB" ondragenter="return dragEnter(event)"
-         ondrop="return dragDrop(event)"
-         ondragover="return dragOver(event)">Dustbin</div>
-</center>
+
+        s = " 你的屏幕设置是 "+ window.screen.colorDepth+ " 位彩色";
+        s = " 你的屏幕设置 "+ window.screen.deviceXDPI +" 像素/英寸";
+
+    }
+    getInfo();
+</script>
 </body>
 </html>

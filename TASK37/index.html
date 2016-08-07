@@ -62,6 +62,7 @@
             top: 50%;
             transform: translate(-50%,-50%);
             position: absolute;
+            cursor: move;
         }
         .mask-p{
             border: 3px solid #55a532;
@@ -71,7 +72,6 @@
             position: absolute;
             top: 50%;
             margin-top: -15px;
-
         }
         .icon{
             text-align: center;
@@ -93,11 +93,11 @@
 <body>
 <div class="container">
     <div class="nav">
-       <div class="nav-container">
-           <a href="">首页</a>
-           <a href="">产品介绍</a>
-           <a href="">联系我们</a>
-       </div>
+        <div class="nav-container">
+            <a href="">首页</a>
+            <a href="">产品介绍</a>
+            <a href="">联系我们</a>
+        </div>
         <a href="" class="sign-in">登录</a>
     </div>
     <div class="main">
@@ -116,14 +116,12 @@
         var icon = document.getElementsByClassName("icon")[0];
         var containerMask = document.getElementsByClassName("container-mask")[0];
         var mask = document.getElementsByClassName("mask")[0];
-
 //        mask.ondragstart = function(){
 //            dragStart(event);
 //        }
 //        containerMask.ondrop = function(){
 //            dragDrop(event);
 //        }
-
         icon.onclick = function(){
             mask.style.display = "none";
             containerMask.style.display = "none";
@@ -172,9 +170,9 @@
         var minPosTop;
         //绑定事件
         mask.onmousedown = function(e){
-             var target = e.target;
-             elOffSetX = target.offsetLeft;
-             elOffSetY = target.offsetTop;
+            var target = e.target;
+            elOffSetX = target.offsetLeft;
+            elOffSetY = target.offsetTop;
             //console.log(elOffSetX,elOffSetY);
             //console.log(isDraging);
             //console.log(e.pageX, e.pageY);
@@ -184,51 +182,42 @@
         }
         document.onmousemove = function(e){
             isDraging2 = true;
-
-           if(isDraging1){
-               var pageX = document.documentElement.clientWidth;
-               var pageY = document.documentElement.clientHeight;
-               maxPosLeft = pageX - mask.offsetWidth / 2;
-               maxPosTop = pageY - mask.offsetHeight / 2;
-               minPosLeft = mask.offsetWidth / 2;
-               minPosTop = mask.offsetHeight / 2;
+            if(isDraging1){
+                var pageX = document.documentElement.clientWidth;
+                var pageY = document.documentElement.clientHeight;
+                maxPosLeft = pageX - mask.offsetWidth / 2;
+                maxPosTop = pageY - mask.offsetHeight / 2;
+                minPosLeft = mask.offsetWidth / 2;
+                minPosTop = mask.offsetHeight / 2;
                 console.log(maxPosLeft,maxPosTop,minPosLeft,minPosTop);
-
-               currentMousePosX = e.pageX;
-               currentMousePosY = e.pageY;
-               moveX = currentMousePosX - mouseSetX;
-               moveY = currentMousePosY - mouseSetY;
-
-               elPosX = elOffSetX + moveX;
-               elPosY = elOffSetY + moveY;
-               //检测元素是否超出屏幕范围
-               if(elPosX > maxPosLeft){
-                   elPosX = Math.min(maxPosLeft,elPosX);
-               }
-               if(elPosX < minPosLeft){
-                   elPosX = Math.max(minPosLeft,elPosX);
-               }
-               if(elPosY > maxPosTop){
-                   elPosY = Math.min(maxPosTop,elPosY);
-               }
-               if(elPosY < minPosTop){
-                   elPosY = Math.max(minPosTop,elPosY);
-               }
-
-               console.log(elPosX,elPosY);
-                   timer = setInterval(function(){
-                       mask.style.left = elPosX+"px";
-                       mask.style.top = elPosY+"px";
-                   },10)
-
-
-
-           }
+                currentMousePosX = e.pageX;
+                currentMousePosY = e.pageY;
+                moveX = currentMousePosX - mouseSetX;
+                moveY = currentMousePosY - mouseSetY;
+                elPosX = elOffSetX + moveX;
+                elPosY = elOffSetY + moveY;
+                //检测元素是否超出屏幕范围
+                if(elPosX > maxPosLeft){
+                    elPosX = Math.min(maxPosLeft,elPosX);
+                }
+                if(elPosX < minPosLeft){
+                    elPosX = Math.max(minPosLeft,elPosX);
+                }
+                if(elPosY > maxPosTop){
+                    elPosY = Math.min(maxPosTop,elPosY);
+                }
+                if(elPosY < minPosTop){
+                    elPosY = Math.max(minPosTop,elPosY);
+                }
+                console.log(elPosX,elPosY);
+                timer = setInterval(function(){
+                    mask.style.left = elPosX+"px";
+                    mask.style.top = elPosY+"px";
+                },10)
+            }
             else {
-               clearInterval(timer);
-           }
-
-
+                clearInterval(timer);
+            }
         }
         var elPosX;
         var elPosY;
@@ -244,9 +233,7 @@
             if(timer != null){
                 clearInterval(timer);
             }
-
         }
-
     })();
 </script>
 </body>
